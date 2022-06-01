@@ -4,7 +4,7 @@
 
 /**
  *
- * @author Place Your Name Here
+ * @author Axel Cornelly
  */
 public abstract class Part {
     private int id;
