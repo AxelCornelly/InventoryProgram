@@ -10,8 +10,12 @@ import javafx.stage.Stage;
  * @author Axel Cornelly
  */
 
-import javafx.*;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
+import javafx.scene.layout.GridPane;
 
 public class Inventory extends Application{
     private static ObservableList<Part> allParts;
@@ -67,7 +71,26 @@ public class Inventory extends Application{
 
     @Override
     public void start(Stage appStage) {
+        GridPane gridPane = new GridPane();
+        Scene scene = new Scene(gridPane);
+        Label formName = new Label("Inventory Management System");
+        Insets gridPadding = new Insets(10, 10, 10, 10);
+        TableView<Part> partTable = new TableView<Part>();
+        TableView<Product> productTable = new TableView<Product>();
 
+        gridPane.add(formName, 0, 0);
+        gridPane.add(partTable, 0, 1);
+        gridPane.add(productTable, 1, 1);
+        gridPane.setPadding(gridPadding);
+
+        appStage.setScene(scene);
+        appStage.setTitle("Inventory Management System");
+        appStage.show();
+
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 
 }
