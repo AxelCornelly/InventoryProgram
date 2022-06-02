@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 
 public class Inventory extends Application{
     private static ObservableList<Part> allParts;
@@ -74,13 +75,31 @@ public class Inventory extends Application{
         GridPane gridPane = new GridPane();
         Scene scene = new Scene(gridPane);
         Label formName = new Label("Inventory Management System");
-        Insets gridPadding = new Insets(10, 10, 10, 10);
+        Insets gridPadding = new Insets(10, 10, 20, 10);
+
+        Pane partsPane = new Pane();
+        partsPane.setStyle("-fx-background-fill: black, white;");
+        partsPane.setStyle("-fx-background-insets: 0, 3;");
+
+        Pane productsPane = new Pane();
+        productsPane.setStyle("-fx-background-fill: black, white;");
+        productsPane.setStyle("-fx-background-insets: 0, 3;");
+        
         TableView<Part> partTable = new TableView<Part>();
+        partTable.relocate(0, 15);
         TableView<Product> productTable = new TableView<Product>();
+        productTable.relocate(0, 15);
+
+        Label partPaneLabel = new Label("Parts");
+        Label productPaneLabel = new Label("Products");
 
         gridPane.add(formName, 0, 0);
-        gridPane.add(partTable, 0, 1);
-        gridPane.add(productTable, 1, 1);
+        gridPane.add(partsPane, 0, 1);
+        gridPane.add(productsPane, 1, 1);
+        partsPane.getChildren().add(partPaneLabel);
+        partsPane.getChildren().add(partTable);
+        productsPane.getChildren().add(productPaneLabel);
+        productsPane.getChildren().add(productTable);
         gridPane.setPadding(gridPadding);
 
         appStage.setScene(scene);
