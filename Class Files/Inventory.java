@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -11,6 +13,7 @@ import javafx.stage.Stage;
  */
 
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -71,37 +74,9 @@ public class Inventory extends Application{
     }
 
     @Override
-    public void start(Stage appStage) {
-        GridPane gridPane = new GridPane();
-        Scene scene = new Scene(gridPane);
-        Label formName = new Label("Inventory Management System");
-        Insets gridPadding = new Insets(10, 10, 20, 10);
-
-        Pane partsPane = new Pane();
-        partsPane.setStyle("-fx-background-fill: black, white;");
-        partsPane.setStyle("-fx-background-insets: 0, 3;");
-
-        Pane productsPane = new Pane();
-        productsPane.setStyle("-fx-background-fill: black, white;");
-        productsPane.setStyle("-fx-background-insets: 0, 3;");
-        
-        TableView<Part> partTable = new TableView<Part>();
-        partTable.relocate(0, 15);
-        TableView<Product> productTable = new TableView<Product>();
-        productTable.relocate(0, 15);
-
-        Label partPaneLabel = new Label("Parts");
-        Label productPaneLabel = new Label("Products");
-
-        gridPane.add(formName, 0, 0);
-        gridPane.add(partsPane, 0, 1);
-        gridPane.add(productsPane, 1, 1);
-        partsPane.getChildren().add(partPaneLabel);
-        partsPane.getChildren().add(partTable);
-        productsPane.getChildren().add(productPaneLabel);
-        productsPane.getChildren().add(productTable);
-        gridPane.setPadding(gridPadding);
-
+    public void start(Stage appStage) throws IOException{
+        Pane mainPane = (Pane) FXMLLoader.load(getClass().getResource("/UI/mainform.fxml"));
+        Scene scene = new Scene(mainPane);
         appStage.setScene(scene);
         appStage.setTitle("Inventory Management System");
         appStage.show();
