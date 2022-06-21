@@ -75,6 +75,9 @@ public class Inventory extends Application{
 
     @Override
     public void start(Stage appStage) throws IOException{
+        FormController controller = new FormController();
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setController(controller);
         Pane mainPane = (Pane) FXMLLoader.load(getClass().getResource("/UI/mainform.fxml"));
         Scene scene = new Scene(mainPane);
         appStage.setScene(scene);
