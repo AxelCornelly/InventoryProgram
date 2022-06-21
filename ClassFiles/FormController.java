@@ -1,3 +1,4 @@
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -33,4 +34,8 @@ public class FormController {
 
     @FXML
     private TextField productSearchbar;
+
+    public void closeApp() {
+        Platform.exit();
+    }
 }
