@@ -1,3 +1,4 @@
+package InventoryProgram;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -40,6 +41,7 @@ public class FormController {
     Stage stage;
 
     public void closeApp(ActionEvent e) {
+        System.out.println("Exit btn pressed");
         stage = (Stage) mainPane.getScene().getWindow();
         stage.close();
     }

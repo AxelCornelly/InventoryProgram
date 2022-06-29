@@ -1,3 +1,4 @@
+package InventoryProgram;
 /**
 * Supplied class Part.java 
  */

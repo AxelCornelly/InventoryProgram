@@ -1,8 +1,4 @@
-import java.io.IOException;
-
-import javafx.application.Application;
-import javafx.stage.Stage;
-
+package InventoryProgram;
 /**
  * Inventory class.
  * Main application file
@@ -20,6 +16,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import java.io.IOException;
+import javafx.application.Application;
+import javafx.stage.Stage;
+
 
 public class Inventory extends Application{
     private static ObservableList<Part> allParts;
@@ -75,9 +75,6 @@ public class Inventory extends Application{
 
     @Override
     public void start(Stage appStage) throws IOException{
-        FormController controller = new FormController();
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setController(controller);
         Pane mainPane = (Pane) FXMLLoader.load(getClass().getResource("/UI/mainform.fxml"));
         Scene scene = new Scene(mainPane);
         appStage.setScene(scene);

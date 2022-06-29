@@ -1,3 +1,4 @@
+package InventoryProgram;
 public class InHouse extends Part{
     private int machineId;
     /**

@@ -1,3 +1,4 @@
+package InventoryProgram;
 import javafx.collections.ObservableList;
 
 public class Product {
