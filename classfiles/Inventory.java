@@ -80,7 +80,6 @@ public class Inventory extends Application{
         appStage.setScene(scene);
         appStage.setTitle("Inventory Management System");
         appStage.show();
-
     }
 
     public static void main(String[] args) {
