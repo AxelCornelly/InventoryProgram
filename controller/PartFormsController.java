@@ -1,14 +1,10 @@
-package classfiles;
+package controller;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -37,7 +33,7 @@ public class PartFormsController {
 
     @FXML
     public void handleCancelBtn(ActionEvent e) throws IOException{
-        Pane main = (Pane) FXMLLoader.load(getClass().getResource("/UI/mainform.fxml"));
+        Pane main = (Pane) FXMLLoader.load(getClass().getResource("/view/mainform.fxml"));
         Stage stage = (Stage) partCancelBtn.getScene().getWindow();
 
         stage.setScene(new Scene(main));

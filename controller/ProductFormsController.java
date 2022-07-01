@@ -1,4 +1,4 @@
-package classfiles;
+package controller;
 
 import java.io.IOException;
 
@@ -33,7 +33,7 @@ public class ProductFormsController {
 
     @FXML
     public void handleCancelBtn(ActionEvent e) throws IOException{
-        Pane main = (Pane) FXMLLoader.load(getClass().getResource("/UI/mainform.fxml"));
+        Pane main = (Pane) FXMLLoader.load(getClass().getResource("/view/mainform.fxml"));
         Stage stage = (Stage) productCancelBtn.getScene().getWindow();
 
         stage.setScene(new Scene(main));

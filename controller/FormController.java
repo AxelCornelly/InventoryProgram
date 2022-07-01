@@ -1,13 +1,11 @@
-package classfiles;
+package controller;
 import java.io.IOException;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -32,11 +30,11 @@ public class FormController {
     public void switchSceneTo(String form, Button btn) throws IOException{
         Stage stage = (Stage) btn.getScene().getWindow();
         
-        FXMLLoader partLoader = new FXMLLoader(getClass().getResource("/UI/partform.fxml"));
+        FXMLLoader partLoader = new FXMLLoader(getClass().getResource("/view/partform.fxml"));
         Pane partPane = (Pane) partLoader.load();
         PartFormsController partFormsController = partLoader.getController();
         
-        FXMLLoader productLoader = new FXMLLoader(getClass().getResource("/UI/productform.fxml"));
+        FXMLLoader productLoader = new FXMLLoader(getClass().getResource("/view/productform.fxml"));
         Pane productPane = (Pane) productLoader.load();
         ProductFormsController productFormsController = productLoader.getController();
 
