@@ -15,11 +15,11 @@ public class Inventory {
     private static ObservableList<Product> allProducts;
 
     public static void addPart(Part part) {
-
+        allParts.add(part);
     }
 
     public static void addProduct(Product product) {
-
+        allProducts.add(product);
     }
 
     public static Part lookupPart(int partID) {

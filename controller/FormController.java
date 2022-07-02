@@ -1,17 +1,22 @@
 package controller;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import model.Inventory;
 
-public class FormController {
+public class FormController implements Initializable{
     @FXML
     private Button addPartBtn, modifyPartBtn, deletePartBtn, addProductBtn, modifyProductBtn, deleteProductBtn, exitBtn;
 
@@ -20,6 +25,10 @@ public class FormController {
 
     @FXML
     private TableView partsTableView, productTableView;
+
+    @FXML
+    private TableColumn partIDColumn, partNameColumn, partInvColumn, partPriceColumn,
+                        productIDColumn, productNameColumn, productInvColumn, productPriceColumn;
 
     @FXML
     public void closeApp(ActionEvent e) {
@@ -76,6 +85,12 @@ public class FormController {
     @FXML
     public void handleModifyProductBtn(ActionEvent e) throws IOException{
         switchSceneTo("modifyproductform", modifyProductBtn);
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        
+        
     }
 
 }

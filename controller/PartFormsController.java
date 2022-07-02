@@ -1,6 +1,11 @@
 package controller;
 
+import model.InHouse;
+import model.Inventory;
+import model.Outsourced;
+
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,6 +32,10 @@ public class PartFormsController {
     @FXML
     private Label partChangingLabel, partFormTitleLabel;
 
+    AtomicInteger autoID = new AtomicInteger(1);
+    private boolean inHouse;
+    private boolean outsourced;
+
     public void updateLabel(String text) {
         partFormTitleLabel.setText(text);
     }
@@ -41,15 +50,43 @@ public class PartFormsController {
 
     @FXML
     public void inHouseChecked(ActionEvent e) {
-        outsourcedRadioBtn.setSelected(false);
+        inHouse = inHouseRadioBtn.isSelected();
+        
+        outsourcedRadioBtn.setSelected(false); // unselects other radio button
+        outsourced = outsourcedRadioBtn.isSelected();
+
         partChangingLabel.setText("Machine ID");
     }
 
     @FXML
     public void outsourcedChecked(ActionEvent e) {
-        inHouseRadioBtn.setSelected(false);
+        outsourced = outsourcedRadioBtn.isSelected();
+        inHouseRadioBtn.setSelected(false); // unselects other radio button
+        inHouse = inHouseRadioBtn.isSelected();
         partChangingLabel.setText("Company Name");
     }
 
-    
+    @FXML
+    public void savePart(ActionEvent e) throws IOException {
+        int id = autoID.getAndIncrement();
+        String name = partNameField.getText();
+        int stock = Integer.parseInt(partInvField.getText());
+        double price = Double.parseDouble(partPriceField.getText());
+        int max = Integer.parseInt(partMaxField.getText());
+        int min = Integer.parseInt(partMinField.getText());
+        
+        if(inHouse) {
+            int machineId = Integer.parseInt(partChangingField.getText());
+            Inventory.addPart(new InHouse(id, name, price, stock, min, max, machineId));
+        }
+        else if(outsourced) {
+            String companyName = partChangingField.getText();
+            Inventory.addPart(new Outsourced(id, name, price, stock, min, max, companyName));
+        }
+
+        Pane main = (Pane) FXMLLoader.load(getClass().getResource("/view/mainform.fxml"));
+        Stage stage = (Stage) partSaveBtn.getScene().getWindow();
+
+        stage.setScene(new Scene(main));
+    }
 }
