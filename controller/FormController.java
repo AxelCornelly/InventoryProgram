@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,9 +13,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.Inventory;
+import model.Part;
+import model.Product;
 
 public class FormController implements Initializable{
     @FXML
@@ -24,11 +28,21 @@ public class FormController implements Initializable{
     private TextField partSearchbar, productSearchbar;
 
     @FXML
-    private TableView partsTableView, productTableView;
+    private TableView<Part> partsTableView;
+    
+    @FXML
+    private TableView<Product> productTableView;
 
     @FXML
-    private TableColumn partIDColumn, partNameColumn, partInvColumn, partPriceColumn,
-                        productIDColumn, productNameColumn, productInvColumn, productPriceColumn;
+    private TableColumn<Part, Integer> partIDColumn;
+
+    @FXML
+    private TableColumn<Part, String> partNameColumn, partInvColumn, partPriceColumn;
+    
+    @FXML
+    private TableColumn<Part, Integer> productIDColumn;
+    @FXML
+    private TableColumn<Product, String> productNameColumn, productInvColumn, productPriceColumn;
 
     @FXML
     public void closeApp(ActionEvent e) {
@@ -89,7 +103,23 @@ public class FormController implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        ObservableList<Part> parts = Inventory.getAllParts();
+        System.out.println(parts);
+        ObservableList<Product> products = Inventory.getAllProducts();
+        System.out.println(products);
+
+        partIDColumn.setCellValueFactory(new PropertyValueFactory<>("Part ID"));
+        partNameColumn.setCellValueFactory(new PropertyValueFactory<>("Part Name"));
+        partInvColumn.setCellValueFactory(new PropertyValueFactory<>("Inventory Level"));
+        partPriceColumn.setCellValueFactory(new PropertyValueFactory<>("Price/Cost per Unit"));
+
+        productIDColumn.setCellValueFactory(new PropertyValueFactory<>("Product ID"));
+        productNameColumn.setCellValueFactory(new PropertyValueFactory<>("Product Name"));
+        productInvColumn.setCellValueFactory(new PropertyValueFactory<>("Inventory Level"));
+        productPriceColumn.setCellValueFactory(new PropertyValueFactory<>("Price/Cost per Unit"));
         
+        partsTableView.setItems(parts);
+        productTableView.setItems(products);
         
     }
 
