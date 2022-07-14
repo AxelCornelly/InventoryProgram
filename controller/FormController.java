@@ -3,6 +3,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,15 +37,25 @@ public class FormController implements Initializable{
     private TableView<Product> productTableView;
 
     @FXML
-    private TableColumn<Part, Integer> partIDColumn;
+    private TableColumn<Part, Integer> partIDColumn, partInvColumn;
 
     @FXML
-    private TableColumn<Part, String> partNameColumn, partInvColumn, partPriceColumn;
+    private TableColumn<Part, String> partNameColumn;
+
+    @FXML
+    private TableColumn<Part, Double> partPriceColumn;
     
     @FXML
-    private TableColumn<Part, Integer> productIDColumn;
+    private TableColumn<Product, Integer> productIDColumn, productInvColumn;
+
     @FXML
-    private TableColumn<Product, String> productNameColumn, productInvColumn, productPriceColumn;
+    private TableColumn<Product, String> productNameColumn;
+
+    @FXML
+    private TableColumn<Product, Double> productPriceColumn;
+
+    private ObservableList<Part> partsList = Inventory.getAllParts();
+    private ObservableList<Product> productsList = Inventory.getAllProducts();
 
     @FXML
     public void closeApp(ActionEvent e) {
@@ -103,24 +116,33 @@ public class FormController implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ObservableList<Part> parts = Inventory.getAllParts();
-        System.out.println(parts);
-        ObservableList<Product> products = Inventory.getAllProducts();
-        System.out.println(products);
+        partIDColumn.setCellValueFactory(new PropertyValueFactory<Part, Integer>("id"));
+        partNameColumn.setCellValueFactory(new PropertyValueFactory<Part, String>("name"));
+        partInvColumn.setCellValueFactory(new PropertyValueFactory<Part, Integer>("stock"));
+        partPriceColumn.setCellValueFactory(new PropertyValueFactory<Part, Double>("price"));
 
-        partIDColumn.setCellValueFactory(new PropertyValueFactory<>("Part ID"));
-        partNameColumn.setCellValueFactory(new PropertyValueFactory<>("Part Name"));
-        partInvColumn.setCellValueFactory(new PropertyValueFactory<>("Inventory Level"));
-        partPriceColumn.setCellValueFactory(new PropertyValueFactory<>("Price/Cost per Unit"));
-
-        productIDColumn.setCellValueFactory(new PropertyValueFactory<>("Product ID"));
-        productNameColumn.setCellValueFactory(new PropertyValueFactory<>("Product Name"));
-        productInvColumn.setCellValueFactory(new PropertyValueFactory<>("Inventory Level"));
-        productPriceColumn.setCellValueFactory(new PropertyValueFactory<>("Price/Cost per Unit"));
+        productIDColumn.setCellValueFactory(new PropertyValueFactory<Product, Integer>("id"));
+        productNameColumn.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
+        productInvColumn.setCellValueFactory(new PropertyValueFactory<Product, Integer>("stock"));
+        productPriceColumn.setCellValueFactory(new PropertyValueFactory<Product, Double>("price"));
         
-        partsTableView.setItems(parts);
-        productTableView.setItems(products);
+        partsTableView.setItems(partsList);
+        productTableView.setItems(productsList);
         
     }
+    /*
+     * TO DO: 
+     * Fix adding part function. So far, table is not being populated and
+     * adding part does nothing. The methods below dont behave correctly.
+     * Might want to check the savePart method in PartformsController Class
+     */
+    public void addToPartTable(Part part) {
+        partsTableView.getItems().add(part);
+        System.out.println(partsTableView.getItems());
+    }
 
+    public void addToProductTable(Product product) {
+        productTableView.getItems().add(product);
+        System.out.println(productTableView.getItems());
+    }
 }

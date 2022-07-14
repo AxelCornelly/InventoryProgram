@@ -74,14 +74,19 @@ public class PartFormsController {
         double price = Double.parseDouble(partPriceField.getText());
         int max = Integer.parseInt(partMaxField.getText());
         int min = Integer.parseInt(partMinField.getText());
+
+        FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("/view/mainform.fxml"));
+        FormController mainController = mainLoader.getController();
         
         if(inHouse) {
             int machineId = Integer.parseInt(partChangingField.getText());
-            Inventory.addPart(new InHouse(id, name, price, stock, min, max, machineId));
+            InHouse inHousePart = new InHouse(id, name, price, stock, min, max, machineId);
+            mainController.addToPartTable(inHousePart);
         }
         else if(outsourced) {
             String companyName = partChangingField.getText();
-            Inventory.addPart(new Outsourced(id, name, price, stock, min, max, companyName));
+            Outsourced outsourcedPart = new Outsourced(id, name, price, stock, min, max, companyName);
+            mainController.addToPartTable(outsourcedPart);
         }
 
         Pane main = (Pane) FXMLLoader.load(getClass().getResource("/view/mainform.fxml"));
