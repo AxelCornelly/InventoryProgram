@@ -54,9 +54,6 @@ public class FormController implements Initializable{
     @FXML
     private TableColumn<Product, Double> productPriceColumn;
 
-    private ObservableList<Part> partsList = Inventory.getAllParts();
-    private ObservableList<Product> productsList = Inventory.getAllProducts();
-
     @FXML
     public void closeApp(ActionEvent e) {
         Stage stage = (Stage) exitBtn.getScene().getWindow();
@@ -116,33 +113,17 @@ public class FormController implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        partIDColumn.setCellValueFactory(new PropertyValueFactory<Part, Integer>("id"));
-        partNameColumn.setCellValueFactory(new PropertyValueFactory<Part, String>("name"));
-        partInvColumn.setCellValueFactory(new PropertyValueFactory<Part, Integer>("stock"));
-        partPriceColumn.setCellValueFactory(new PropertyValueFactory<Part, Double>("price"));
+        partIDColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        partNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        partInvColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        partPriceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
 
-        productIDColumn.setCellValueFactory(new PropertyValueFactory<Product, Integer>("id"));
-        productNameColumn.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
-        productInvColumn.setCellValueFactory(new PropertyValueFactory<Product, Integer>("stock"));
-        productPriceColumn.setCellValueFactory(new PropertyValueFactory<Product, Double>("price"));
+        productIDColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        productNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        productInvColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        productPriceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
         
-        partsTableView.setItems(partsList);
-        productTableView.setItems(productsList);
-        
-    }
-    /*
-     * TO DO: 
-     * Fix adding part function. So far, table is not being populated and
-     * adding part does nothing. The methods below dont behave correctly.
-     * Might want to check the savePart method in PartformsController Class
-     */
-    public void addToPartTable(Part part) {
-        partsTableView.getItems().add(part);
-        System.out.println(partsTableView.getItems());
-    }
-
-    public void addToProductTable(Product product) {
-        productTableView.getItems().add(product);
-        System.out.println(productTableView.getItems());
+        partsTableView.setItems(Inventory.getAllParts());
+        productTableView.setItems(Inventory.getAllProducts());
     }
 }

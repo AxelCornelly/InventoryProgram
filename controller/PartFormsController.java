@@ -33,8 +33,6 @@ public class PartFormsController {
     private Label partChangingLabel, partFormTitleLabel;
 
     AtomicInteger autoID = new AtomicInteger(1);
-    private boolean inHouse;
-    private boolean outsourced;
 
     public void updateLabel(String text) {
         partFormTitleLabel.setText(text);
@@ -74,19 +72,16 @@ public class PartFormsController {
         double price = Double.parseDouble(partPriceField.getText());
         int max = Integer.parseInt(partMaxField.getText());
         int min = Integer.parseInt(partMinField.getText());
-
-        FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("/view/mainform.fxml"));
-        FormController mainController = mainLoader.getController();
         
-        if(inHouse) {
+        if(inHouseRadioBtn.isSelected()) {
             int machineId = Integer.parseInt(partChangingField.getText());
             InHouse inHousePart = new InHouse(id, name, price, stock, min, max, machineId);
-            mainController.addToPartTable(inHousePart);
+            Inventory.addPart(inHousePart);
         }
-        else if(outsourced) {
+        else if(outsourcedRadioBtn.isSelected()) {
             String companyName = partChangingField.getText();
             Outsourced outsourcedPart = new Outsourced(id, name, price, stock, min, max, companyName);
-            mainController.addToPartTable(outsourcedPart);
+            Inventory.addPart(outsourcedPart);
         }
 
         Pane main = (Pane) FXMLLoader.load(getClass().getResource("/view/mainform.fxml"));
