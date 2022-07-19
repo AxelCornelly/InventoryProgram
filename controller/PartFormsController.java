@@ -3,6 +3,7 @@ package controller;
 import model.InHouse;
 import model.Inventory;
 import model.Outsourced;
+import model.Part;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -38,6 +39,21 @@ public class PartFormsController {
         partFormTitleLabel.setText(text);
     }
 
+    public void parsePartData(Part part) {
+        partIDField.setText(String.valueOf(part.getId()));
+        partNameField.setText(part.getName());
+        partInvField.setText(String.valueOf(part.getStock()));
+        partPriceField.setText(String.valueOf(part.getPrice()));
+        partMaxField.setText(String.valueOf(part.getMax()));
+        partMinField.setText(String.valueOf(part.getMin()));
+        if(inHouseRadioBtn.isSelected()) {
+            // TODO: How to handle extended class as parameter
+        }
+        else if(outsourcedRadioBtn.isSelected()) {
+            // TODO: How to handle extended class as parameter
+        }
+    }
+
     @FXML
     public void handleCancelBtn(ActionEvent e) throws IOException{
         Pane main = (Pane) FXMLLoader.load(getClass().getResource("/view/mainform.fxml"));
@@ -48,19 +64,13 @@ public class PartFormsController {
 
     @FXML
     public void inHouseChecked(ActionEvent e) {
-        inHouse = inHouseRadioBtn.isSelected();
-        
         outsourcedRadioBtn.setSelected(false); // unselects other radio button
-        outsourced = outsourcedRadioBtn.isSelected();
-
         partChangingLabel.setText("Machine ID");
     }
 
     @FXML
     public void outsourcedChecked(ActionEvent e) {
-        outsourced = outsourcedRadioBtn.isSelected();
         inHouseRadioBtn.setSelected(false); // unselects other radio button
-        inHouse = inHouseRadioBtn.isSelected();
         partChangingLabel.setText("Company Name");
     }
 

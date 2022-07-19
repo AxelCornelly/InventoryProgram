@@ -22,7 +22,7 @@
             </TableView>
             <Button fx:id="addPartBtn" layoutX="201.0" layoutY="240.0" mnemonicParsing="false" onAction="#handleAddPartBtn" text="Add" />
             <Button fx:id="modifyPartBtn" layoutX="248.0" layoutY="240.0" mnemonicParsing="false" onAction="#handleModifyPartBtn" text="Modify" />
-            <Button fx:id="deletePartBtn" layoutX="306.0" layoutY="240.0" mnemonicParsing="false" text="Delete" />
+            <Button fx:id="deletePartBtn" layoutX="306.0" layoutY="240.0" mnemonicParsing="false" onAction="#handleDeletePartBtn" text="Delete" />
          </children>
       </Pane>
       <Label layoutX="14.0" layoutY="70.0" style="-fx-font-weight: bold; -fx-font-size: 15;" text="Inventory Management System">
@@ -42,7 +42,7 @@
                   <TableColumn fx:id="productPriceColumn" prefWidth="124.0" text="Price/Cost per Unit" />
                </columns>
             </TableView>
-            <Button fx:id="deleteProductBtn" layoutX="322.0" layoutY="240.0" mnemonicParsing="false" text="Delete" />
+            <Button fx:id="deleteProductBtn" layoutX="322.0" layoutY="240.0" mnemonicParsing="false" onAction="#handleDeleteProductBtn" text="Delete" />
             <Button fx:id="modifyProductBtn" layoutX="261.0" layoutY="240.0" mnemonicParsing="false" onAction="#handleModifyProductBtn" text="Modify" />
             <Button fx:id="addProductBtn" layoutX="217.0" layoutY="240.0" mnemonicParsing="false" onAction="#handleAddProductBtn" text="Add" />
          </children>

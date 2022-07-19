@@ -12,6 +12,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import model.Product;
 
 public class ProductFormsController {
     @FXML
@@ -29,6 +30,15 @@ public class ProductFormsController {
 
     public void updateLabel(String text) {
         productTitleLabel.setText(text);
+    }
+
+    public void parseProductData(Product product) {
+        productIDField.setText(String.valueOf(product.getId()));
+        productNameField.setText(product.getName());
+        productInvField.setText(String.valueOf(product.getStock()));
+        productPriceField.setText(String.valueOf(product.getPrice()));
+        productMaxField.setText(String.valueOf(product.getMax()));
+        productMinField.setText(String.valueOf(product.getMin()));
     }
 
     @FXML
