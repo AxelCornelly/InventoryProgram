@@ -33,7 +33,8 @@ public class PartFormsController {
     @FXML
     private Label partChangingLabel, partFormTitleLabel;
 
-    AtomicInteger autoID = new AtomicInteger(1);
+    private int autoID;
+    //AtomicInteger autoID = new AtomicInteger(1);
 
     public void updateLabel(String text) {
         partFormTitleLabel.setText(text);
@@ -68,6 +69,10 @@ public class PartFormsController {
         partChangingLabel.setText("Machine ID");
     }
 
+    public void setPartID(int newID) {
+        autoID = newID;
+    }
+
     @FXML
     public void outsourcedChecked(ActionEvent e) {
         inHouseRadioBtn.setSelected(false); // unselects other radio button
@@ -76,7 +81,8 @@ public class PartFormsController {
 
     @FXML
     public void savePart(ActionEvent e) throws IOException {
-        int id = autoID.getAndIncrement();
+        //int id = autoID.getAndIncrement();
+        int id = autoID;
         String name = partNameField.getText();
         int stock = Integer.parseInt(partInvField.getText());
         double price = Double.parseDouble(partPriceField.getText());
