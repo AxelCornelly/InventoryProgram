@@ -1,4 +1,5 @@
 package model;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class Product {
@@ -68,14 +69,15 @@ public class Product {
     }
 
     public void addAssociatedPart(Part part) {
+        associatedParts = FXCollections.observableArrayList();
         associatedParts.add(part);
     }
 
     public boolean deleteAssociatedPart(Part selectedPart) {
-
+        return associatedParts.remove(selectedPart);
     }
 
     public ObservableList<Part> getAllAssociatedParts() {
-        
+        return associatedParts;
     }
 }

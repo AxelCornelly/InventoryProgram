@@ -28,24 +28,24 @@
             <Label layoutX="73.0" layoutY="80.0" text="ID" />
             <TableView fx:id="productTopTableView" layoutX="455.0" layoutY="51.0" prefHeight="193.0" prefWidth="366.0">
                <columns>
-                  <TableColumn editable="false" prefWidth="47.0" text="Part ID" />
-                  <TableColumn editable="false" prefWidth="75.0" text="Part Name" />
-                  <TableColumn prefWidth="103.0" text="Inventory Level" />
-                  <TableColumn prefWidth="129.0" text="Price/Cost per Unit" />
+                  <TableColumn fx:id="topIDCol" editable="false" prefWidth="47.0" text="Part ID" />
+                  <TableColumn fx:id="topNameCol" editable="false" prefWidth="75.0" text="Part Name" />
+                  <TableColumn fx:id="topInvCol" prefWidth="103.0" text="Inventory Level" />
+                  <TableColumn fx:id="topPriceCol" prefWidth="129.0" text="Price/Cost per Unit" />
                </columns>
             </TableView>
             <TableView fx:id="productBottomTableView" layoutX="455.0" layoutY="292.0" prefHeight="193.0" prefWidth="366.0">
                <columns>
-                  <TableColumn editable="false" prefWidth="47.0" text="Part ID" />
-                  <TableColumn editable="false" prefWidth="75.0" text="Part Name" />
-                  <TableColumn prefWidth="103.0" text="Inventory Level" />
-                  <TableColumn prefWidth="129.0" text="Price/Cost per Unit" />
+                  <TableColumn fx:id="botIDCol" editable="false" prefWidth="47.0" text="Part ID" />
+                  <TableColumn fx:id="botNameCol" editable="false" prefWidth="75.0" text="Part Name" />
+                  <TableColumn fx:id="botInvCol" prefWidth="103.0" text="Inventory Level" />
+                  <TableColumn fx:id="botPriceCol" prefWidth="129.0" text="Price/Cost per Unit" />
                </columns>
             </TableView>
             <TextField fx:id="productPartSearchbar" layoutX="664.0" layoutY="16.0" prefHeight="25.0" prefWidth="157.0" promptText="Search by Part ID or Name" />
-            <Button fx:id="productAddPartBtn" layoutX="744.0" layoutY="256.0" mnemonicParsing="false" text="Add" />
-            <Button fx:id="removeBtn" layoutX="664.0" layoutY="492.0" mnemonicParsing="false" text="Remove Associated Part" />
-            <Button fx:id="productSaveBtn" layoutX="664.0" layoutY="534.0" mnemonicParsing="false" text="Save" />
+            <Button fx:id="productAddPartBtn" layoutX="744.0" layoutY="256.0" mnemonicParsing="false" onAction="#handleProductAddPartBtn" text="Add" />
+            <Button fx:id="removeBtn" layoutX="664.0" layoutY="492.0" mnemonicParsing="false" onAction="#handleRemoveBtn" text="Remove Associated Part" />
+            <Button fx:id="productSaveBtn" layoutX="664.0" layoutY="534.0" mnemonicParsing="false" onAction="#saveProduct" text="Save" />
             <Button fx:id="productCancelBtn" layoutX="756.0" layoutY="534.0" mnemonicParsing="false" onAction="#handleCancelBtn" text="Cancel" />
          </children>
       </Pane>

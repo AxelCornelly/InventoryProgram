@@ -70,24 +70,12 @@ public class Inventory {
 
     public static void updatePart(int index, Part selectedPart) {
         if(selectedPart.getClass().getSimpleName().equalsIgnoreCase("inhouse")) {
-            InHouse partToUpdate = (InHouse) Inventory.getAllParts().get(index);
-            partToUpdate.setId(selectedPart.getId());
-            partToUpdate.setName(selectedPart.getName());
-            partToUpdate.setPrice(selectedPart.getPrice());
-            partToUpdate.setStock(selectedPart.getStock());
-            partToUpdate.setMin(selectedPart.getMin());
-            partToUpdate.setMax(selectedPart.getMax());
-            partToUpdate.setMachineId(((InHouse)selectedPart).getMachineId());
+            getAllParts().remove(getAllParts().get(index));
+            getAllParts().add(index, (InHouse)selectedPart);
         }
         else if(selectedPart.getClass().getSimpleName().equalsIgnoreCase("outsourced")) {
-            Outsourced partToUpdate = (Outsourced) Inventory.getAllParts().get(index);
-            partToUpdate.setId(selectedPart.getId());
-            partToUpdate.setName(selectedPart.getName());
-            partToUpdate.setPrice(selectedPart.getPrice());
-            partToUpdate.setStock(selectedPart.getStock());
-            partToUpdate.setMin(selectedPart.getMin());
-            partToUpdate.setMax(selectedPart.getMax());
-            partToUpdate.setCompanyName(((Outsourced)selectedPart).getCompanyName());
+            getAllParts().remove(getAllParts().get(index));
+            getAllParts().add(index, (Outsourced)selectedPart);
         }
     }
 
@@ -96,16 +84,11 @@ public class Inventory {
     }
 
     public static boolean deletePart(Part selectedPart) {
-        if(allParts.remove(selectedPart)) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return allParts.remove(selectedPart);
     }
 
     public static boolean deleteProduct(Product selectedProduct) {
-
+        return allProducts.remove(selectedProduct);
     }
 
     public static ObservableList<Part> getAllParts() {

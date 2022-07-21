@@ -1,19 +1,11 @@
 package controller;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.concurrent.atomic.AtomicInteger;
 
-import javax.swing.Action;
 
-import com.apple.dnssd.QueryListener;
-
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,17 +13,16 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import model.InHouse;
 import model.Inventory;
-import model.Outsourced;
 import model.Part;
 import model.Product;
 
@@ -96,8 +87,8 @@ public class FormController implements Initializable{
                 int selected = partsTableView.getSelectionModel().getSelectedIndex();
                 if(selected >= 0) {
                     Object selectedPart = partsTableView.getSelectionModel().getSelectedItem();
-                    partFormsController.modifyPart(selectedPart);
-                    partFormsController.updateLabel("Add Part");
+                    partFormsController.parsePartData(selectedPart);
+                    partFormsController.updateLabel("Modify Part");
                     stage.setScene(new Scene(partPane));
                 }
                 else {
@@ -140,9 +131,25 @@ public class FormController implements Initializable{
 
     @FXML
     public void handleDeletePartBtn(ActionEvent e) throws IOException {
-        Part selected = partsTableView.getSelectionModel().getSelectedItem();
-        if(Inventory.deletePart(selected)) {
-            partsTableView.getSelectionModel().clearSelection();
+        int selected = partsTableView.getSelectionModel().getSelectedIndex();
+        if(selected >= 0) {
+            Alert confirmDeleteAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmDeleteAlert.setTitle("Confirm Delete");
+            confirmDeleteAlert.setHeaderText("You're about to delete a part!");
+            confirmDeleteAlert.setContentText("Are you sure you want to delete this part?");
+
+            ButtonType yesButton = new ButtonType("Yes", ButtonData.OK_DONE);
+            ButtonType cancelButton = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+            confirmDeleteAlert.getButtonTypes().setAll(yesButton, cancelButton);
+            Optional<ButtonType> result = confirmDeleteAlert.showAndWait();
+            
+            if(result.get() == yesButton) {
+                Inventory.deletePart(partsTableView.getSelectionModel().getSelectedItem());
+                partsTableView.getSelectionModel().clearSelection();
+            }
+            else {
+                // close dialog
+            }
         }
         else {
             Alert deleteAlert = new Alert(Alert.AlertType.ERROR);
@@ -158,8 +165,34 @@ public class FormController implements Initializable{
     public void handleDeleteProductBtn(ActionEvent e) throws IOException {
         int selected = productTableView.getSelectionModel().getSelectedIndex();
         if(selected >= 0) {
-            Inventory.getAllProducts().remove(selected);
-            productTableView.getSelectionModel().clearSelection();
+            Product selectedProduct = productTableView.getSelectionModel().getSelectedItem();
+            
+            if(selectedProduct.getAllAssociatedParts().size() == 0){
+                Alert confirmDeleteAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                confirmDeleteAlert.setTitle("Confirm Delete");
+                confirmDeleteAlert.setHeaderText("You're about to delete a product!");
+                confirmDeleteAlert.setContentText("Are you sure you want to delete this product?");
+
+                ButtonType yesButton = new ButtonType("Yes", ButtonData.OK_DONE);
+                ButtonType cancelButton = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+                confirmDeleteAlert.getButtonTypes().setAll(yesButton, cancelButton);
+                Optional<ButtonType> result = confirmDeleteAlert.showAndWait();
+                
+                if(result.get() == yesButton) {
+                    Inventory.deleteProduct(productTableView.getSelectionModel().getSelectedItem());
+                    partsTableView.getSelectionModel().clearSelection();
+                }
+                else {
+                    // close dialog
+                }
+            }
+            else {
+                Alert confirmDeleteAlert = new Alert(Alert.AlertType.ERROR);
+                confirmDeleteAlert.setTitle("Error Deleting");
+                confirmDeleteAlert.setHeaderText("Unable to Delete Product");
+                confirmDeleteAlert.setContentText("This product has parts associated with it.");
+                confirmDeleteAlert.showAndWait();
+            }
         }
         else {
             Alert deleteAlert = new Alert(Alert.AlertType.ERROR);
