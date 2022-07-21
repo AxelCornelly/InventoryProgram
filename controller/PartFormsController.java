@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -33,25 +34,43 @@ public class PartFormsController {
     @FXML
     private Label partChangingLabel, partFormTitleLabel;
 
-    private int autoID;
-    //AtomicInteger autoID = new AtomicInteger(1);
+    public static int id = 1;
+    private static boolean modifying = false;
+    private static InHouse tempInHouse;
+    private static Outsourced tempOutsourced;
 
     public void updateLabel(String text) {
         partFormTitleLabel.setText(text);
     }
 
-    public void parsePartData(Part part) {
-        partIDField.setText(String.valueOf(part.getId()));
-        partNameField.setText(part.getName());
-        partInvField.setText(String.valueOf(part.getStock()));
-        partPriceField.setText(String.valueOf(part.getPrice()));
-        partMaxField.setText(String.valueOf(part.getMax()));
-        partMinField.setText(String.valueOf(part.getMin()));
-        if(inHouseRadioBtn.isSelected()) {
-            // TODO: How to handle extended class as parameter
+    public void modifyPart(Object part) {
+        modifying = true;
+
+        if(part.getClass().getSimpleName().equalsIgnoreCase("inhouse")) {
+            inHouseRadioBtn.setSelected(true);
+            outsourcedRadioBtn.setSelected(false);
+
+            tempInHouse = (InHouse) part;
+            partIDField.setText(String.valueOf(tempInHouse.getId()));
+            partNameField.setText(tempInHouse.getName());
+            partInvField.setText(String.valueOf(tempInHouse.getStock()));
+            partPriceField.setText(String.valueOf(tempInHouse.getPrice()));
+            partMaxField.setText(String.valueOf(tempInHouse.getMax()));
+            partMinField.setText(String.valueOf(tempInHouse.getMin()));
+            partChangingField.setText(String.valueOf(tempInHouse.getMachineId()));
         }
-        else if(outsourcedRadioBtn.isSelected()) {
-            // TODO: How to handle extended class as parameter
+        else if(part.getClass().getSimpleName().equalsIgnoreCase("outsourced")) {
+            inHouseRadioBtn.setSelected(false);
+            outsourcedRadioBtn.setSelected(true);
+
+            tempOutsourced = (Outsourced) part;
+            partIDField.setText(String.valueOf(tempOutsourced.getId()));
+            partNameField.setText(tempOutsourced.getName());
+            partInvField.setText(String.valueOf(tempOutsourced.getStock()));
+            partPriceField.setText(String.valueOf(tempOutsourced.getPrice()));
+            partMaxField.setText(String.valueOf(tempOutsourced.getMax()));
+            partMinField.setText(String.valueOf(tempOutsourced.getMin()));
+            partChangingField.setText(tempOutsourced.getCompanyName());
         }
     }
 
@@ -69,10 +88,6 @@ public class PartFormsController {
         partChangingLabel.setText("Machine ID");
     }
 
-    public void setPartID(int newID) {
-        autoID = newID;
-    }
-
     @FXML
     public void outsourcedChecked(ActionEvent e) {
         inHouseRadioBtn.setSelected(false); // unselects other radio button
@@ -81,28 +96,54 @@ public class PartFormsController {
 
     @FXML
     public void savePart(ActionEvent e) throws IOException {
-        //int id = autoID.getAndIncrement();
-        int id = autoID;
         String name = partNameField.getText();
         int stock = Integer.parseInt(partInvField.getText());
         double price = Double.parseDouble(partPriceField.getText());
         int max = Integer.parseInt(partMaxField.getText());
         int min = Integer.parseInt(partMinField.getText());
         
-        if(inHouseRadioBtn.isSelected()) {
-            int machineId = Integer.parseInt(partChangingField.getText());
-            InHouse inHousePart = new InHouse(id, name, price, stock, min, max, machineId);
-            Inventory.addPart(inHousePart);
+        // Exception control
+        if(stock > max || stock < min || stock < 0) {
+            Alert dataAlert = new Alert(Alert.AlertType.ERROR);
+            dataAlert.setTitle("Error!");
+            dataAlert.setHeaderText("Invalid Entry");
+            dataAlert.setContentText("Inventory cannot be greater than max, less than min, or negative.");
+            dataAlert.showAndWait();
         }
-        else if(outsourcedRadioBtn.isSelected()) {
-            String companyName = partChangingField.getText();
-            Outsourced outsourcedPart = new Outsourced(id, name, price, stock, min, max, companyName);
-            Inventory.addPart(outsourcedPart);
+        else {
+            if(inHouseRadioBtn.isSelected()) {
+                int machineId = Integer.parseInt(partChangingField.getText());
+
+                if(modifying) {
+                    InHouse inHousePart = new InHouse(Integer.parseInt(partIDField.getText()), name, price, stock, min, max, machineId);
+                    Inventory.updatePart(Inventory.getAllParts().indexOf(tempInHouse), inHousePart);
+                    modifying = false;
+                }
+                else {
+                    InHouse inHousePart = new InHouse(id++, name, price, stock, min, max, machineId);
+                    Inventory.addPart(inHousePart);
+                    modifying = false;
+                } 
+            }
+            else if(outsourcedRadioBtn.isSelected()) {
+                String companyName = partChangingField.getText();
+                // TO DO: Fix line 133. Index out of bound error for modifying a part.
+                if(modifying) {
+                    Outsourced outsourcedPart = new Outsourced(Integer.parseInt(partIDField.getText()), name, price, stock, min, max, companyName);
+                    Inventory.updatePart(Inventory.getAllParts().indexOf(tempOutsourced), outsourcedPart);
+                    modifying = false;
+                }
+                else {
+                    Outsourced outsourcedPart = new Outsourced(id++, name, price, stock, min, max, companyName);
+                    Inventory.addPart(outsourcedPart);
+                    modifying = false;
+                }
+            }
+            
+            Pane main = (Pane) FXMLLoader.load(getClass().getResource("/view/mainform.fxml"));
+            Stage stage = (Stage) partSaveBtn.getScene().getWindow();
+
+            stage.setScene(new Scene(main));
         }
-
-        Pane main = (Pane) FXMLLoader.load(getClass().getResource("/view/mainform.fxml"));
-        Stage stage = (Stage) partSaveBtn.getScene().getWindow();
-
-        stage.setScene(new Scene(main));
     }
 }

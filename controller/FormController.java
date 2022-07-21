@@ -66,13 +66,6 @@ public class FormController implements Initializable{
     @FXML
     private TableColumn<Product, Double> productPriceColumn;
 
-    SortedList<Part> sortedParts;
-    SortedList<Product> sortedProducts;
-    AtomicInteger partAutoID = new AtomicInteger(1);
-    AtomicInteger productAutoID = new AtomicInteger(1);
-    int partID;
-    int productID;
-
     @FXML
     public void closeApp(ActionEvent e) {
         Stage stage = (Stage) exitBtn.getScene().getWindow();
@@ -93,8 +86,6 @@ public class FormController implements Initializable{
         switch(form) {
             case "addpartform":
                 partFormsController.updateLabel("Add Part");
-                partID = partAutoID.getAndIncrement();
-                partFormsController.setPartID(partID);
                 stage.setScene(new Scene(partPane));
                 break;
             case "addproductform":
@@ -104,8 +95,9 @@ public class FormController implements Initializable{
             case "modifypartform":
                 int selected = partsTableView.getSelectionModel().getSelectedIndex();
                 if(selected >= 0) {
-                    partFormsController.parsePartData(partsTableView.getSelectionModel().getSelectedItem());
-                    partFormsController.updateLabel("Modify Part");
+                    Object selectedPart = partsTableView.getSelectionModel().getSelectedItem();
+                    partFormsController.modifyPart(selectedPart);
+                    partFormsController.updateLabel("Add Part");
                     stage.setScene(new Scene(partPane));
                 }
                 else {
@@ -124,6 +116,14 @@ public class FormController implements Initializable{
                     productFormsController.updateLabel("Modify Product");
                     stage.setScene(new Scene(productPane));
                 }
+                else {
+                    Alert modifyAlert = new Alert(Alert.AlertType.ERROR);
+                    modifyAlert.setTitle("Modify Error");
+                    modifyAlert.setHeaderText("Error Modifying Product");
+                    modifyAlert.setContentText("No valid product selected.");
+
+                    modifyAlert.showAndWait();
+                }
                 break;
         }
     }
@@ -140,13 +140,9 @@ public class FormController implements Initializable{
 
     @FXML
     public void handleDeletePartBtn(ActionEvent e) throws IOException {
-        int selected = partsTableView.getSelectionModel().getSelectedIndex();
-        if(selected >= 0) {
-            int source = sortedParts.getSourceIndexFor(Inventory.getAllParts(), selected);
-            if(source >= 0) {
-                Inventory.getAllParts().remove(source);
-                partsTableView.getSelectionModel().clearSelection();
-            }
+        Part selected = partsTableView.getSelectionModel().getSelectedItem();
+        if(Inventory.deletePart(selected)) {
+            partsTableView.getSelectionModel().clearSelection();
         }
         else {
             Alert deleteAlert = new Alert(Alert.AlertType.ERROR);
@@ -162,11 +158,8 @@ public class FormController implements Initializable{
     public void handleDeleteProductBtn(ActionEvent e) throws IOException {
         int selected = productTableView.getSelectionModel().getSelectedIndex();
         if(selected >= 0) {
-            int source = sortedProducts.getSourceIndexFor(Inventory.getAllProducts(), selected);
-            if(source >= 0) {
-                Inventory.getAllProducts().remove(source);
-                productTableView.getSelectionModel().clearSelection();
-            }
+            Inventory.getAllProducts().remove(selected);
+            productTableView.getSelectionModel().clearSelection();
         }
         else {
             Alert deleteAlert = new Alert(Alert.AlertType.ERROR);
@@ -188,26 +181,8 @@ public class FormController implements Initializable{
         switchSceneTo("modifyproductform", modifyProductBtn);
     }
 
-    private static boolean firstTime = true;
-    private void addTestData() {
-        if(!firstTime) {
-            return;
-        }
-
-        firstTime = false;
-        InHouse wheel = new InHouse(1, "Wheel", 2.99, 5, 1, 10, 1);
-        Outsourced handlebar = new Outsourced(2, "Handlebar", 7.50, 3, 1, 15, "Handle Co.");
-        InHouse brake = new InHouse(3, "Brake", 10, 5, 1, 10, 4);
-        Inventory.addPart(wheel);
-        Inventory.addPart(handlebar);
-        Inventory.addPart(brake);
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Add test values
-        addTestData();
-        
         // Initialize table columns to values
         partIDColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         partNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -219,75 +194,76 @@ public class FormController implements Initializable{
         productInvColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
         productPriceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
 
-        // Search bar functionality (Part)
-        // TODO: Add ability to show warning dialog on enter key press as well
-        // FilteredList<Part> filteredParts = new FilteredList<>(Inventory.getAllParts(), p -> true);
-        // partSearchbar.textProperty().addListener((observable, oldVal, newVal) -> {
-        //     filteredParts.setPredicate(part -> {
-        //         if(newVal == null || newVal.isEmpty()) {
-        //             return true;
-        //         }
-
-        //         String filter = newVal.toLowerCase();
-        //         if(part.getName().toLowerCase().contains(filter)) { 
-        //             return true; 
-        //         }
-        //         return false;
-        //     });
-        // });
-        
-        // sortedParts = new SortedList<>(filteredParts);
-        // sortedParts.comparatorProperty().bind(partsTableView.comparatorProperty());
-        // partsTableView.setItems(sortedParts);
-
-        // // Searchbar Functionality (Product)
-        // FilteredList<Product> filteredProducts = new FilteredList<>(Inventory.getAllProducts(), p -> true);
-        // productSearchbar.textProperty().addListener((observable, oldVal, newVal) -> {
-        //     filteredProducts.setPredicate(product -> {
-        //         if(newVal == null || newVal.isEmpty()) {
-        //             return true;
-        //         }
-
-        //         String filter = newVal.toLowerCase();
-        //         if(product.getName().toLowerCase().contains(filter)) { 
-        //             return true; 
-        //         }
-        //         return false;
-        //     });
-        // });
-        
-        // sortedProducts = new SortedList<>(filteredProducts);
-        // sortedProducts.comparatorProperty().bind(productTableView.comparatorProperty());
-        // productTableView.setItems(Inventory.getAllProducts());
+        // Part Searchbar functionality
         partSearchbar.setOnKeyPressed(e -> {
             if(e.getCode() == KeyCode.ENTER) {
                 String query = partSearchbar.getText();
 
-                ObservableList<Part> parts = searchPartByName(query);
+                // Search by name
+                ObservableList<Part> parts = Inventory.lookupPart(query);
+                
+                // If first call results in empty list, assume an ID is passed.
+                try {
+                    if(parts.isEmpty()) {
+                        int id = Integer.parseInt(query);
+                        Part p = Inventory.lookupPart(id);
+                        if(p != null) {
+                            parts.add(p);
+                        }
+                    }
+                }
+                catch (NumberFormatException err) {
+                    // Ignore
+                }
+                
+                partsTableView.setItems(parts);
 
-                if(parts.isEmpty() || parts == null) {
+                // If after both searches used and list still empty, display error.
+                if(parts.isEmpty()) {
                     Alert partSearchAlert = new Alert(Alert.AlertType.WARNING);
                     partSearchAlert.setTitle("Search Error");
-                    partSearchAlert.setContentText("Part not found!");
+                    partSearchAlert.setHeaderText("Part not found!");
+                    partSearchAlert.setContentText("Check ID or spelling.");
+                    partSearchAlert.showAndWait();
                 }
-                partsTableView.setItems(parts);
+            }
+        });
+
+        // Product Searchbar functionality
+        productSearchbar.setOnKeyPressed(e -> {
+            if(e.getCode() == KeyCode.ENTER) {
+                String query = productSearchbar.getText();
+
+                ObservableList<Product> products = Inventory.lookupProduct(query);
+                
+                // If first call results in empty list, assume an ID is passed.
+                try {
+                    if(products.isEmpty()) {
+                        int id = Integer.parseInt(query);
+                        Product p = Inventory.lookupProduct(id);
+                        if(p != null) {
+                            products.add(p);
+                        }
+                    }
+                }
+                catch (NumberFormatException err) {
+                    // Ignore
+                }
+                
+                productTableView.setItems(products);
+
+                // If after both searches used and list still empty, display error.
+                if(products.isEmpty()) {
+                    Alert productSearchAlert = new Alert(Alert.AlertType.WARNING);
+                    productSearchAlert.setTitle("Search Error");
+                    productSearchAlert.setHeaderText("Product not found!");
+                    productSearchAlert.setContentText("Check ID or spelling.");
+                    productSearchAlert.showAndWait();
+                }
             }
         });
 
         partsTableView.setItems(Inventory.getAllParts());
         productTableView.setItems(Inventory.getAllProducts());
-    }
-
-    private ObservableList<Part> searchPartByName(String q) {
-        ObservableList<Part> queriedParts = FXCollections.observableArrayList();
-        ObservableList<Part> allParts = Inventory.getAllParts();
-
-        for(Part p : allParts) {
-            if(p.getName().toLowerCase().contains(q.toLowerCase())) {
-                queriedParts.add(p);
-            }
-        }
-
-        return queriedParts;
     }
 }
