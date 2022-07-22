@@ -1,10 +1,18 @@
 package controller;
+/**
+ * FormController Class FormController.java
+ * This is the controller class for the main
+ * form fxml file.
+ */
+
+/**
+ * @author Axel Cornelly
+ */
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
-
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -57,12 +65,72 @@ public class FormController implements Initializable{
     @FXML
     private TableColumn<Product, Double> productPriceColumn;
 
+    
+    /** 
+     * @param e
+     * 
+     * <p><b>
+     * Functionality
+     * </b></p>
+     * 
+     * The closeApp() function is an event listener that takes in an ActionEvent object e.
+     * The method closes out of the program as if the close window button was pressed.
+     * 
+     * <p><b>
+     * Issues
+     * </b></p>
+     * 
+     * With this method I had issues with the window closing because I had initially forgot to cast
+     * exitBtn.getScene().getwindow as a Stage object.
+     * 
+     * <p><b>
+     * Improvements
+     * </b></p>
+     * 
+     * Initialize a Stage object instead of casting it in order to clean up code.
+     * 
+     */
     @FXML
     public void closeApp(ActionEvent e) {
         Stage stage = (Stage) exitBtn.getScene().getWindow();
         stage.close();
     }
 
+    
+    /** 
+     * @param form
+     * @param btn
+     * @throws IOException
+     * 
+     * <p><b>
+     * Functionality
+     * </b></p>
+     * 
+     * This method was a helper method I created to avoid the redundancy of multiple screen
+     * switching methods. It takes in a String object which is the command to determine the
+     * path of the desired fxml file, and a Button object which determines which button called it.
+     * The method utilizes a switch block that takes in the String parameter and sets the stage
+     * scene dependent on the desired form.
+     * 
+     * <p><b>
+     * Issues
+     * </b></p>
+     * 
+     * I had many issues with this method. At first, the FXMLLoaders could not find the path that
+     * led to the correct fxml files due to my project not being a Java package. I also had problems
+     * figuring out how to change form widgets from another form until I referred to the webinar that
+     * explained how. When it came to switching to the modifying forms for both parts and products,
+     * it took some time for me to figure out how to use the tableview selection methods.
+     * 
+     * <p><b>
+     * Improvements
+     * </b></p>
+     * 
+     * I would improve this method by removing it altogether. Even though it is redundant, I would have
+     * had less problems if I created multiple event listener methods binded to the corresponding buttons
+     * that would need to use them. This would remove the need for the switch block and result in easier to read code.
+     * 
+     */
     public void switchSceneTo(String form, Button btn) throws IOException {
         Stage stage = (Stage) btn.getScene().getWindow();
         
@@ -119,16 +187,104 @@ public class FormController implements Initializable{
         }
     }
 
+    
+    /** 
+     * @param e
+     * @throws IOException
+     * 
+     * <p><b>
+     * Functionality
+     * </b></p>
+     * 
+     * This method is an event listener for its corresponding button. When triggered,
+     * it will call the helper method switchSceneTo() with parameters "addpartform" and addPartBtn.
+     * This is sending that helper method the correlated command to open the part form window as well as
+     * send the button that was used to find out which window the command came from.
+     * 
+     * <p><b>
+     * Issues
+     * </b></p>
+     * 
+     * I had issues with calling the helper method in this method. I had to play around with what parameters 
+     * would needed to be passed and how to handle them in the helper method.
+     * 
+     * <p><b>
+     * Improvements
+     * </b></p>
+     * 
+     * Instead of calling a helper method, I would just write out the functionality of switching scenes into this
+     * method. It would remove the layering of method calls and result in easier bug fixing.
+     * 
+     */
     @FXML
     public void handleAddPartBtn(ActionEvent e) throws IOException {
         switchSceneTo("addpartform", addPartBtn);
     }
 
+    
+    /** 
+     * @param e
+     * @throws IOException
+     * <p><b>
+     * Functionality
+     * </b></p>
+     * 
+     * This method functions the same as handleAddPartBtn(). It is an event listener for a binded button.
+     * It calls a helper method with a String and Button as parameters.
+     * 
+     * <p><b>
+     * Issues
+     * </b></p>
+     * 
+     * This method had the same issues as the method above. I also had issues with passing in the wrong
+     * String command into the helper method which resulted in opening the wrong form/window. I also had
+     * an issue binding it to the right button because the method names are so similar.
+     * 
+     * <p><b>
+     * Improvements
+     * </b></p>
+     * 
+     * I would also remove the helper method call here as well. It adds an extra step and isn't necessary.
+     * I would have just put the logic for switching scenes here as well.
+     * 
+     */
     @FXML
     public void handleAddProductBtn(ActionEvent e) throws IOException {
         switchSceneTo("addproductform", addProductBtn);
     }
 
+    
+    /** 
+     * @param e
+     * @throws IOException
+     * 
+     * <p><b>
+     * Functionality
+     * </b></p>
+     * 
+     * This method is an event listener that is binded to a Button object.
+     * This method allows for the user to delete a selected part after a
+     * quick confirmation from a popup Dialog. Upon deleting the selected
+     * part, the part is removed from the table view as well as the allParts
+     * ObservableList found in the Inventory class.
+     * 
+     * <p><b>
+     * Issues
+     * </b></p>
+     * 
+     * With this method, I had issues with initializing the confirmation dialog box.
+     * The yesButton object I created wouldn't show sometimes and was replaced with the
+     * default "Ok" button. This method also had issues with deleting the part regardless
+     * of saying yes or cancel.
+     * 
+     * <p><b>
+     * Improvements
+     * </b></p>
+     * 
+     * I would improve this method by adding an additional Dialog box that would appear
+     * upon a successful delete that showed the information about the deleted Part.
+     * 
+     */
     @FXML
     public void handleDeletePartBtn(ActionEvent e) throws IOException {
         int selected = partsTableView.getSelectionModel().getSelectedIndex();
@@ -161,6 +317,40 @@ public class FormController implements Initializable{
         }
     }
 
+    
+    /** 
+     * @param e
+     * @throws IOException
+     * 
+     * <p><b>
+     * Functionality
+     * </b></p>
+     * 
+     * This method is an event listener that is binded to a button.
+     * When called, it checks to see if a Product within the Product
+     * Table View is selected and tries to delete it. If there is no 
+     * selected Product, an error Dialog will appear warning the user.
+     * If the Product has an associated part, it will also show an
+     * error Dialog to the user. If the Product does not have an
+     * associated part, then it prompts the user for confirmation and
+     * removes the Product from the Table View and ObservableList if 
+     * the user presses yes.
+     * 
+     * <p><b>
+     * Issues
+     * </b></p>
+     * 
+     * I had a small issue with this method where the Product would be
+     * deleted regardless of if the Product had associated parts with it.
+     * 
+     * <p><b>
+     * Improvements
+     * </b></p>
+     * 
+     * I would add an additional dialog box after a successful delete
+     * that showed the information of the Product deleted.
+     * 
+     */
     @FXML
     public void handleDeleteProductBtn(ActionEvent e) throws IOException {
         int selected = productTableView.getSelectionModel().getSelectedIndex();
@@ -204,16 +394,105 @@ public class FormController implements Initializable{
         }
     }
 
+    
+    /** 
+     * @param e
+     * @throws IOException
+     * 
+     * <p><b>
+     * Functionality
+     * </b></p>
+     * 
+     * This method is an event listener that is binded to a button.
+     * It calls the helper method switchSceneTo() with parameters
+     * that will allow the window to change to the modify part form.
+     * 
+     * <p><b>
+     * Issues
+     * </b></p>
+     * 
+     * This method had issues with passing the correct button from which
+     * it was called from.
+     * 
+     * <p><b>
+     * Improvements
+     * </b></p>
+     * 
+     * I would remove the helper method call and put all functionality within
+     * this method. I would also add a Dialog box to appear and notify the user
+     * that they are about to switch windows.
+     * 
+     */
     @FXML
     public void handleModifyPartBtn(ActionEvent e) throws IOException {
         switchSceneTo("modifypartform", modifyPartBtn);
     }
 
+    
+    /** 
+     * @param e
+     * @throws IOException
+     * 
+     * <p><b>
+     * Functionality
+     * </b></p>
+     * 
+     * This method is an event listener that is binded to a button.
+     * It called the helper method switchSceneTo() with parameters
+     * that allow the window to switch to the modify product form.
+     * 
+     * <p><b>
+     * Issues
+     * </b></p>
+     * 
+     * An issue I had with this method was passing the correct parameters
+     * to the helper method.
+     * 
+     * <p><b>
+     * Improvements
+     * </b></p>
+     * 
+     * I would remove the helper method call and build the funcionality here
+     * instead. I would also add a Dialog box to confirm with the user that 
+     * they are about to modify a product.
+     * 
+     */
     @FXML
     public void handleModifyProductBtn(ActionEvent e) throws IOException {
         switchSceneTo("modifyproductform", modifyProductBtn);
     }
 
+    
+    /** 
+     * @param location
+     * @param resources
+     * 
+     * <p><b>
+     * Functionality
+     * </b></p>
+     * 
+     * This is an overrided method from the superclass Initializable. It 
+     * initializes a window and all its data as it loads. This method is
+     * used to populate the table views on the main form. It also includes
+     * lambda method calls for search bar functionality.
+     * 
+     * <p><b>
+     * Issues
+     * </b></p>
+     * 
+     * I had an issue displaying the data in the table views. At first I
+     * was not pulling data from the ObservableLists in the Inventory class.
+     * I also had problems with setting the cell value factories for the 
+     * table columns and had mismatching column value types.
+     * 
+     * <p><b>
+     * Improvements
+     * </b></p>
+     * 
+     * I would add a welcome Dialog to appear on the first call of this method
+     * so that the user is greeted when they run the program for the first time.
+     * 
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Initialize table columns to values

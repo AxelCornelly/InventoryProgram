@@ -1,12 +1,18 @@
 package controller;
+/**
+ * ProductFormsController Class ProductFormsController.java
+ * This class serves as the controller for the add and modify
+ * Product forms.
+ */
+
+ /**
+ * @author Axel Cornelly
+ */
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
-import javax.swing.Action;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -58,10 +64,61 @@ public class ProductFormsController implements Initializable{
     private Product currProduct;
     private static ObservableList<Part> assocParts = FXCollections.observableArrayList();
 
+    
+    /** 
+     * @param text
+     * 
+     * <p><b>
+     * Functionality
+     * </b></p>
+     * 
+     * This method takes in a String parameter and updated the 
+     * text of the productTitleLabel
+     * 
+     * <p><b>
+     * Issues
+     * </b></p>
+     * 
+     * Was updating the wrong label at one point.
+     * 
+     * <p><b>
+     * Improvements
+     * </b></p>
+     * 
+     * I don't think there could be any improvements to functionality here.
+     * It is just a simple method to change the text on a widget.
+     * 
+     */
     public void updateLabel(String text) {
         productTitleLabel.setText(text);
     }
 
+    
+    /** 
+     * @param product
+     * 
+     * <p><b>
+     * Functionality
+     * </b></p>
+     * 
+     * This method takes in a Product object and reads its information.
+     * It takes the information and fills the corresponding text fields.
+     * 
+     * <p><b>
+     * Issues
+     * </b></p>
+     * 
+     * Had issues populating the bottom table view of the modify product
+     * form because of an uninitialized ObservableList.
+     * 
+     * <p><b>
+     * Improvements
+     * </b></p>
+     * 
+     * No improvements to this method. It is a simple read and write
+     * method.
+     * 
+     */
     public void parseProductData(Product product) {
         modifying = true;
         currProduct = product;
@@ -77,6 +134,35 @@ public class ProductFormsController implements Initializable{
         productBottomTableView.setItems(assocParts);
     }
 
+    
+    /** 
+     * @param e
+     * @throws IOException
+     * 
+     * <p><b>
+     * Functionality
+     * </b></p>
+     * 
+     * This method is an event listener that is binded to a button.
+     * When triggered, it takes the selected Part object within the
+     * top tableview and add it to the bottom table view as well as
+     * add the part to the Product's list of associated parts.
+     * 
+     * <p><b>
+     * Issues
+     * </b></p>
+     * 
+     * Would add selected Part to the bottom table view but not to 
+     * the Product's associated parts list.
+     * 
+     * <p><b>
+     * Improvements
+     * </b></p>
+     * 
+     * Add a dialog box to confirm with the user that they want to
+     * add the selected Part.
+     * 
+     */
     @FXML
     public void handleProductAddPartBtn(ActionEvent e) throws IOException {
         int selected = productTopTableView.getSelectionModel().getSelectedIndex();
@@ -95,6 +181,36 @@ public class ProductFormsController implements Initializable{
                 }
     }
 
+    
+    /** 
+     * @param e
+     * @throws IOException
+     * 
+     * <p><b>
+     * Functionality
+     * </b></p>
+     * 
+     * This method is an event listener that is binded to a button.
+     * When triggered, the method takes the selected Part from the
+     * bottom table view and removes it from the table view as well as
+     * the Product's associated parts list.
+     * 
+     * <p><b>
+     * Issues
+     * </b></p>
+     * 
+     * Had an issue where removing the associated Part would remove the
+     * Part from the top table instead.
+     * 
+     * <p><b>
+     * Improvements
+     * </b></p>
+     * 
+     * I do not know how I would extend the functionality
+     * of this method. It does not need to do any more than remove
+     * the associated part, and do confirmation checks with the user.
+     * 
+     */
     @FXML
     public void handleRemoveBtn(ActionEvent e) throws IOException {
         int selected = productBottomTableView.getSelectionModel().getSelectedIndex();
@@ -128,6 +244,40 @@ public class ProductFormsController implements Initializable{
                 }
     }
 
+    
+    /** 
+     * @param e
+     * @throws IOException
+     * 
+     * <p><b>
+     * Functionality
+     * </b></p>
+     * 
+     * This method is an event listener that is binded to a button.
+     * This method reads the information entered from the user through
+     * text fields and either creates or changes a Product.
+     * There are validity checks for data entered to ensure the 
+     * Product objects can be modified or created.
+     * 
+     * <p><b>
+     * Issues
+     * </b></p>
+     * 
+     * There were issues with validity checks and making sure
+     * the Product was not created or modified if any of the checks
+     * failed. 
+     * 
+     * <p><b>
+     * Improvements
+     * </b></p>
+     * 
+     * I would create a single Alert object and change the content
+     * based on the error to reduce redundancy. I would also add
+     * a Dialog box to pop up to show the user the information of
+     * the Product they created. If the user was modifying, the 
+     * Dialog would show the differences instead.
+     * 
+     */
     @FXML
     public void saveProduct(ActionEvent e) throws IOException {
         boolean stockValid = false;
@@ -263,6 +413,36 @@ public class ProductFormsController implements Initializable{
         }
     }
 
+    
+    /** 
+     * @param e
+     * @throws IOException
+     * 
+     * <p><b>
+     * Functionality
+     * </b></p>
+     * 
+     * This method is an event listener that is binded to a button.
+     * This method acts the same as the handCancelBtn() method found
+     * in the PartFormsController class.
+     * When triggered, it will return to the main form without saving
+     * any information entered.
+     * 
+     * <p><b>
+     * Issues
+     * </b></p>
+     * 
+     * Would continue to display a Product's information when cancelling
+     * and adding a new Product. 
+     * 
+     * <p><b>
+     * Improvements
+     * </b></p>
+     * 
+     * I would add a Dialog box to let the user know that the data
+     * they entered would not be saved.
+     * 
+     */
     @FXML
     public void handleCancelBtn(ActionEvent e) throws IOException{
         if(modifying) {
@@ -275,6 +455,37 @@ public class ProductFormsController implements Initializable{
         stage.setScene(new Scene(main));
     }
 
+    
+    /** 
+     * @param location
+     * @param resources
+     * 
+     * <p><b>
+     * Functionality
+     * </b></p>
+     * 
+     * This method is an overridden method from the superclass
+     * Initializable. It initializes the window upon loading and
+     * sets the data to be visible. This method also holds lambda
+     * methods that provide search bar functionality.
+     * 
+     * <p><b>
+     * Issues
+     * </b></p>
+     * 
+     * There were issues when setting the cell value factories because
+     * the columns weren't initialized in the FXML file.
+     * 
+     * <p><b>
+     * Improvements
+     * </b></p>
+     * 
+     * I do not think the functionality of this method could be
+     * extended as it is purely for initializing the table views
+     * in the product form page and creating the functionality
+     * of the Part search bar.
+     * 
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Initialize table columns to values
