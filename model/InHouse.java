@@ -13,13 +13,13 @@ package model;
 public class InHouse extends Part{
     private int machineId;
     /**
-     * @param id
-     * @param name
-     * @param price
-     * @param stock
-     * @param min
-     * @param max
-     * @param machineId
+     * @param id ID for InHouse Object
+     * @param name Name for InHouse Object
+     * @param price Price of InHouse Object
+     * @param stock Inventory level of InHouse Object
+     * @param min Minimum amount allowed of InHouse Object
+     * @param max Maximum amount allowed of InHouse Object
+     * @param machineId Machine ID for InHouse Object
      * 
      * <p><b>
      * Functionality
@@ -50,7 +50,7 @@ public class InHouse extends Part{
 
     
     /** 
-     * @param machineId
+     * @param machineId InHouse Object's Machine ID
      * <p><b>
      * Functionality
      * </b></p>

@@ -67,7 +67,7 @@ public class FormController implements Initializable{
 
     
     /** 
-     * @param e
+     * @param e Event to listen to
      * 
      * <p><b>
      * Functionality
@@ -98,8 +98,8 @@ public class FormController implements Initializable{
 
     
     /** 
-     * @param form
-     * @param btn
+     * @param form Command to open specific form
+     * @param btn Button that triggered the call
      * @throws IOException
      * 
      * <p><b>
@@ -189,7 +189,7 @@ public class FormController implements Initializable{
 
     
     /** 
-     * @param e
+     * @param e Event to listen to
      * @throws IOException
      * 
      * <p><b>
@@ -223,7 +223,7 @@ public class FormController implements Initializable{
 
     
     /** 
-     * @param e
+     * @param e Event to listen to
      * @throws IOException
      * <p><b>
      * Functionality
@@ -255,7 +255,7 @@ public class FormController implements Initializable{
 
     
     /** 
-     * @param e
+     * @param e Event to listen to
      * @throws IOException
      * 
      * <p><b>
@@ -319,7 +319,7 @@ public class FormController implements Initializable{
 
     
     /** 
-     * @param e
+     * @param e Event to listen to
      * @throws IOException
      * 
      * <p><b>
@@ -396,7 +396,7 @@ public class FormController implements Initializable{
 
     
     /** 
-     * @param e
+     * @param e Event to listen to
      * @throws IOException
      * 
      * <p><b>

@@ -18,7 +18,7 @@ public class Inventory {
 
     
     /** 
-     * @param part
+     * @param part Part object to be added
      * 
      * <p><b>
      * Functionality
@@ -49,7 +49,7 @@ public class Inventory {
 
     
     /** 
-     * @param product
+     * @param product Product Object to be added
      * 
      * <p><b>
      * Functionality
@@ -80,7 +80,7 @@ public class Inventory {
 
     
     /** 
-     * @param partID
+     * @param partID The ID of the Part Object
      * @return Part
      * 
      * <p><b>
@@ -117,7 +117,7 @@ public class Inventory {
 
     
     /** 
-     * @param partName
+     * @param partName The name of the Part to be found
      * @return ObservableList<Part>
      * 
      * <p><b>
@@ -156,7 +156,7 @@ public class Inventory {
 
     
     /** 
-     * @param productID
+     * @param productID The ID of the Product Object to be found
      * @return Product
      * 
      * <p><b>
@@ -193,7 +193,7 @@ public class Inventory {
 
     
     /** 
-     * @param productName
+     * @param productName The name of the Product to be found
      * @return ObservableList<Product>
      * 
      * <p><b>
@@ -233,8 +233,8 @@ public class Inventory {
 
     
     /** 
-     * @param index
-     * @param selectedPart
+     * @param index The index to focus on in the list
+     * @param selectedPart The Part object to update to
      * 
      * <p><b>
      * Functionality
@@ -273,8 +273,8 @@ public class Inventory {
 
     
     /** 
-     * @param index
-     * @param newProduct
+     * @param index The index to focus on in the list
+     * @param newProduct The Product object to update to
      * 
      * <p><b>
      * Functionality
@@ -307,7 +307,7 @@ public class Inventory {
 
     
     /** 
-     * @param selectedPart
+     * @param selectedPart The Part to be deleted
      * @return boolean
      * 
      * <p><b>
@@ -339,7 +339,7 @@ public class Inventory {
 
     
     /** 
-     * @param selectedProduct
+     * @param selectedProduct The Product to be deleted.
      * @return boolean
      * 
      * <p><b>

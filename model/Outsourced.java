@@ -13,13 +13,13 @@ public class Outsourced extends Part{
     private String companyName;
 
     /**
-     * @param id
-     * @param name
-     * @param price
-     * @param stock
-     * @param min
-     * @param max
-     * @param companyName
+     * @param id ID for Outsourced Object
+     * @param name Name for Outsourced Object
+     * @param price Price of Outsourced Object
+     * @param stock Inventory level of Outsourced Object
+     * @param min Minimum amount allowed of Outsourced Object
+     * @param max Maximum amount allowed of Outsourced Object
+     * @param companyName Company Name of the Outsourced Object
      * 
      * <p><b>
      * Functionality
@@ -50,7 +50,7 @@ public class Outsourced extends Part{
 
     
     /** 
-     * @param companyName
+     * @param companyName Company name of the Outsourced Object
      * 
      * <p><b>
      * Functionality

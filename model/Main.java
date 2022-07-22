@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
     
     /** 
-     * @param appStage
+     * @param appStage The stage to open
      * @throws IOException
      * 
      * <p><b>

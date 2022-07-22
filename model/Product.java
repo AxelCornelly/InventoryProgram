@@ -32,7 +32,7 @@ public class Product {
 
     
     /** 
-     * @param id
+     * @param id The ID of the Product object
      * 
      * <p><b>
      * Functionality
@@ -61,7 +61,7 @@ public class Product {
 
     
     /** 
-     * @param name
+     * @param name The name of the Product object
      * 
      * <p><b>
      * Functionality
@@ -91,7 +91,7 @@ public class Product {
 
     
     /** 
-     * @param price
+     * @param price The price of the Product object
      * 
      * <p><b>
      * Functionality
@@ -120,7 +120,7 @@ public class Product {
 
     
     /** 
-     * @param stock
+     * @param stock The inventory level of the Product object
      * 
      * <p><b>
      * Functionality
@@ -149,7 +149,7 @@ public class Product {
 
     
     /** 
-     * @param min
+     * @param min The minimum amount allowed for the Product object
      * 
      * <p><b>
      * Functionality
@@ -178,7 +178,7 @@ public class Product {
 
     
     /** 
-     * @param max
+     * @param max The maximum amount allowed for the Product object
      * 
      * <p><b>
      * Functionality
@@ -382,7 +382,7 @@ public class Product {
 
     
     /** 
-     * @param part
+     * @param part The Part to be associated with
      * 
      * <p><b>
      * Functionality
@@ -413,7 +413,7 @@ public class Product {
 
     
     /** 
-     * @param selectedPart
+     * @param selectedPart The Part to remove from the associated parts list
      * @return boolean
      * 
      * <p><b>

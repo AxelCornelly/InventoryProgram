@@ -48,7 +48,7 @@ public class PartFormsController {
 
     
     /** 
-     * @param text
+     * @param text Text to update Label to
      * 
      * <p><b>
      * Functionality
@@ -79,7 +79,7 @@ public class PartFormsController {
 
     
     /** 
-     * @param part
+     * @param part Part to read data from
      * 
      * <p><b>
      * Functionality
@@ -150,7 +150,7 @@ public class PartFormsController {
 
     
     /** 
-     * @param e
+     * @param e Event to listen to
      * @throws IOException
      * 
      * <p><b>
@@ -192,7 +192,7 @@ public class PartFormsController {
 
     
     /** 
-     * @param e
+     * @param e Event to listen to
      * 
      * <p><b>
      * Functionality
@@ -229,7 +229,7 @@ public class PartFormsController {
 
     
     /** 
-     * @param e
+     * @param e Event to listen to
      * 
      * <p><b>
      * Functionality
@@ -262,7 +262,7 @@ public class PartFormsController {
 
     
     /** 
-     * @param e
+     * @param e Event to listen to
      * @throws IOException
      * 
      * <p><b>
